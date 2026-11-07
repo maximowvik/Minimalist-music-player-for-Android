@@ -13,6 +13,7 @@ build
 # Android
 *.iml
 .gradle
+.git-hub.token.txt
 /local.properties
 /.idea
 .DS_Store
