@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_height="match_parent"
+     android:layout_width="match_parent"
+     android:background="?attr/colorSurface">
+
+    <LinearLayout
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:background="?attr/colorSurface"
+         android:elevation="4dp"
+         app:layout_constraintTop_toTopOf="parent"
+         android:padding="16dp"
+         android:orientation="horizontal"
+         android:id="@+id/statsLayout">
+
+        <TextView
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:textSize="18sp"
+             android:textColor="?attr/colorOnSurface"
+             android:layout_weight="1"
+             android:id="@+id/tvSongCount"
+             android:text="Песен: 0"
+             android:textStyle="bold" />
+
+        <TextView
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:gravity="end"
+             android:textSize="18sp"
+             android:textColor="?attr/colorOnSurface"
+             android:layout_weight="1"
+             android:id="@+id/tvTotalSize"
+             android:text="Вес: 0 MB"
+             android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+         android:layout_height="0dp"
+         android:layout_width="match_parent"
+         android:padding="5dp"
+         android:clipToPadding="false"
+         app:layout_constraintBottom_toTopOf="@id/miniPlayer"
+         app:layout_constraintTop_toBottomOf="@id/statsLayout"
+         android:id="@+id/recyclerView" />
+
+    <LinearLayout
+         android:layout_height="64dp"
+         android:layout_width="match_parent"
+         android:background="?attr/colorSurface"
+         android:clickable="true"
+         android:elevation="8dp"
+         android:orientation="vertical"
+         app:layout_constraintBottom_toBottomOf="parent"
+         android:focusable="true"
+         android:id="@+id/miniPlayer">
+
+        <ProgressBar
+             android:layout_height="3dp"
+             android:layout_width="match_parent"
+             android:max="1000"
+             android:background="@android:color/transparent"
+             android:indeterminate="false"
+             android:progressTint="?attr/colorPrimary"
+             style="?android:attr/progressBarStyleHorizontal"
+             android:progress="0"
+             android:id="@+id/progressBarMini" />
+
+        <LinearLayout
+             android:layout_height="0dp"
+             android:layout_width="match_parent"
+             android:gravity="center_vertical"
+             android:orientation="horizontal"
+             android:paddingHorizontal="16dp"
+             android:layout_weight="1">
+
+            <androidx.cardview.widget.CardView
+                 android:layout_height="48dp"
+                 android:layout_width="48dp"
+                 app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                 app:cardCornerRadius="8dp">
+
+                <ImageView
+                     android:layout_height="match_parent"
+                     android:layout_width="match_parent"
+                     android:scaleType="centerCrop"
+                     android:src="@drawable/ic_not_image"
+                     android:id="@+id/imgMiniArt" />
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:orientation="vertical"
+                 android:layout_marginStart="16dp"
+                 android:layout_weight="1">
+
+                <TextView
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:ellipsize="end"
+                     android:textColor="?attr/colorOnSurface"
+                     android:maxLines="1"
+                     android:id="@+id/tvMiniTitle"
+                     android:text="Нет музыки"
+                     android:textStyle="bold" />
+
+                <TextView
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:ellipsize="end"
+                     android:textSize="12sp"
+                     android:textColor="?attr/colorOnSurfaceVariant"
+                     android:maxLines="1"
+                     android:id="@+id/tvMiniArtist"
+                     android:text="" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/ivMiniPlayPause" 
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_play_arrow_24"
+                android:tint="?attr/colorPrimary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

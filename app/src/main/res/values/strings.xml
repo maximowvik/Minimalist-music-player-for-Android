@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">My music player</string>
+    <string name="import_coiltransformroundedcor">import coil.transform.RoundedCornersTransformation</string>
+</resources>
