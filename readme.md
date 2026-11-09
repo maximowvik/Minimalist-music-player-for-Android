@@ -24,7 +24,7 @@ MyMusicPlayer — это нативное Android-приложение, разр
 
 | Главный экран | Полноэкранный плеер | Начальная настройка |
 | :---: | :---: |
-| ![Home](screnshots/home.jpg) | ![Player](screnshots/player.jpg) | ![Player](screnshots/setup.jpg) |
+| ![Home](screenshots/home.jpg) | ![Player](screenshots/player.jpg) | ![Player](screenshots/setup.jpg) |
 
 ## 🛠️ Технологический стек
 
@@ -83,4 +83,5 @@ app/src/main/kotlin/ru/deltagroup/mymusicplayer/
 Pull Request'ы приветствуются! Если у вас есть идеи по улучшению UI или добавлению новых функций, создавайте Issue или Fork репозитория.
 
 ## 📄 Лицензия
+
 //Этот проект распространяется под лицензией MIT. См. файл LICENSE для подробностей.
