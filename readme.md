@@ -23,7 +23,7 @@ MyMusicPlayer — это нативное Android-приложение, разр
 ## 📸 Скриншоты
 
 | Главный экран | Полноэкранный плеер | Начальная настройка |
-| :---: | :---: |
+| :---: | :---: | :---: |
 | ![Home](screenshots/home.jpg) | ![Player](screenshots/player.jpg) | ![Player](screenshots/setup.jpg) |
 
 ## 🛠️ Технологический стек
