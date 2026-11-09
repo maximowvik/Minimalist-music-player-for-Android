@@ -1,8 +1,6 @@
 package ru.deltagroup.mymusicplayer
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.google.android.material.card.MaterialCardView
 
 // Класс данных для песни
 data class Song(
@@ -48,66 +47,54 @@ class SongAdapter(
         holder.tvAlbum.text = song.album
         holder.tvDuration.text = song.duration
         
-        // Получаем радиус скругления (должен совпадать с XML)
-        val radius = 16f * holder.itemView.resources.displayMetrics.density
+        // Приводим корневой элемент к MaterialCardView
+        val card = holder.itemView as MaterialCardView
+        val context = card.context
         
-        // Получаем цвет фона из темы Material Design
+        // Получаем базовый цвет карточки из темы
         val cardColor = try {
             val typedValue = android.util.TypedValue()
-            holder.itemView.context.theme.resolveAttribute(
-                com.google.android.material.R.attr.colorSurfaceVariant, 
+            context.theme.resolveAttribute(
+                com.google.android.material.R.attr.colorSurfaceContainerLow, 
                 typedValue, 
                 true
             )
             typedValue.data
         } catch (e: Exception) {
-            Color.parseColor("#E0E0E0") // Запасной цвет, если атрибут не найден
+            // Fallback цвет, если атрибут не найден
+            androidx.core.content.ContextCompat.getColor(context, android.R.color.system_neutral1_900)
         }
 
         if (position == currentPlayingIndex) {
-            // --- АКТИВНЫЙ ТРЕК (Фон + Зеленая рамка) ---
-            val strokeWidth = 6
-            
-            // Слой 1: Цветной фон
-            val bgLayer = GradientDrawable().apply {
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = radius
-                setColor(cardColor)
-            }
-            
-            // Слой 2: Рамка
-            val borderLayer = GradientDrawable().apply {
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = radius
-                setStroke(strokeWidth, Color.parseColor("#4CAF50")) // Зеленый цвет рамки
-                setColor(Color.TRANSPARENT)
-            }
-            
-            // Объединяем слои
-            holder.itemView.background = LayerDrawable(arrayOf(bgLayer, borderLayer))
-            holder.itemView.alpha = 1.0f
-            
+            // --- АКТИВНЫЙ ТРЕК (Цветной фон + Яркая рамка Primary) ---
+            card.setCardBackgroundColor(cardColor)
+            card.strokeColor = context.getThemeColor(com.google.android.material.R.attr.colorPrimary)
+            card.strokeWidth = 6 // Толстая рамка (≈ 2dp)
+            card.alpha = 1.0f
         } else {
-            // --- ОБЫЧНЫЙ ТРЕК (Только фон) ---
-            val bgOnly = GradientDrawable().apply {
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = radius
-                setColor(cardColor)
-            }
-            
-            holder.itemView.background = bgOnly
-            holder.itemView.alpha = 0.8f
+            // --- ОБЫЧНЫЙ ТРЕК (Цветной фон + Тонкая обводка Outline) ---
+            card.setCardBackgroundColor(cardColor)
+            card.strokeColor = context.getThemeColor(com.google.android.material.R.attr.colorOutlineVariant)
+            card.strokeWidth = 3 // Тонкая рамка (≈ 1dp)
+            card.alpha = 0.95f
         }
         
-        // Загрузка обложки
+        // Загрузка обложки через Coil
+        // Скругление уже задано в XML через shapeAppearanceOverlay, 
+        // но дополнительная трансформация не помешает
         holder.imgAlbumArt.load(song.albumArtUri) {
             crossfade(true)
             placeholder(R.drawable.ic_not_image)
             error(R.drawable.ic_not_image)
             allowHardware(false)
-            transformations(RoundedCornersTransformation(8f * holder.itemView.resources.displayMetrics.density))
+            transformations(
+                RoundedCornersTransformation(
+                    8f * context.resources.displayMetrics.density
+                )
+            )
         }
 
+        // Клик по всей карточке
         holder.itemView.setOnClickListener { onItemClick(song) }
     }
 

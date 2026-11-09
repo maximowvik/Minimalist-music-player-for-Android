@@ -7,10 +7,9 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,18 +23,19 @@ import androidx.media3.session.SessionToken
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.common.util.concurrent.ListenableFuture
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mediaController: MediaController
     private lateinit var controllerFuture: ListenableFuture<MediaController>
     
-    // Ссылки на View для оптимизации
     private lateinit var btnMiniPlayPause: ImageButton
     private lateinit var tvMiniTitle: TextView
     private lateinit var tvMiniArtist: TextView
     private lateinit var imgMiniArt: ImageView
-    private lateinit var progressBarMini: ProgressBar
+    private lateinit var progressBarMini: LinearProgressIndicator
     private lateinit var recyclerView: RecyclerView
     private var songAdapter: SongAdapter? = null
     
@@ -45,16 +45,16 @@ class MainActivity : AppCompatActivity() {
         override fun run() {
             if (::mediaController.isInitialized) {
                 val duration = mediaController.duration
-                if (duration > 0 && duration != androidx.media3.common.C.TIME_UNSET) {
-                    val position = mediaController.currentPosition.coerceAtLeast(0)
-                    val progress = (position * 1000L / duration).toInt().coerceIn(0, 1000)
+                val position = mediaController.currentPosition
+
+                if (duration > 1000L && position >= 0L) {
+                    val fraction = position.toFloat() / duration.toFloat()
+                    val safeFraction = fraction.coerceIn(0.0f, 1.0f)
+                    val progress = (safeFraction * 100).toInt()
                     progressBarMini.progress = progress
-                    progressBarMini.isIndeterminate = false
-                } else {
-                    progressBarMini.isIndeterminate = true
                 }
-                miniProgressHandler.postDelayed(this, 200)
             }
+            miniProgressHandler.postDelayed(this, 200)
         }
     }
 
@@ -62,11 +62,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Программная установка цвета статус-бара (гарантированно работает)
         window.statusBarColor = Color.TRANSPARENT
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
-        // Инициализация View
         btnMiniPlayPause = findViewById(R.id.ivMiniPlayPause)
         tvMiniTitle = findViewById(R.id.tvMiniTitle)
         tvMiniArtist = findViewById(R.id.tvMiniArtist)
@@ -76,8 +74,8 @@ class MainActivity : AppCompatActivity() {
 
         checkPermissionAndScan()
 
-        // Клик по мини-плееру открывает PlayerActivity
-        findViewById<LinearLayout>(R.id.miniPlayer).setOnClickListener {
+        // Клик по мини-плееру (используем View, так как это MaterialCardView)
+        findViewById<View>(R.id.miniPlayer).setOnClickListener {
             if (::mediaController.isInitialized && mediaController.mediaItemCount > 0) {
                 startActivity(Intent(this, PlayerActivity::class.java))
             } else {
@@ -85,7 +83,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Кнопка Play/Pause в мини-плеере
         btnMiniPlayPause.setOnClickListener {
             if (::mediaController.isInitialized) {
                 if (mediaController.isPlaying) mediaController.pause() else mediaController.play()
@@ -95,21 +92,29 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        
+        // Очищаем очередь перед запуском
+        miniProgressHandler.removeCallbacks(updateMiniProgress)
+        
         val sessionToken = SessionToken(this, ComponentName(this, MusicService::class.java))
         controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
 
         controllerFuture.addListener({
             mediaController = controllerFuture.get()
-            //PlaylistManager.selectedTrackIndex = mediaController.currentMediaItemIndex.takeIf { it >=0 } ?: -1
+            
+            if (mediaController.playbackState != Player.STATE_IDLE && 
+                mediaController.currentMediaItemIndex >= 0) {
+                PlaylistManager.selectedTrackIndex = mediaController.currentMediaItemIndex
+            }
+            
+            songAdapter?.updatePlayingIndex(PlaylistManager.selectedTrackIndex)
             updateMiniPlayerUI()
             miniProgressHandler.post(updateMiniProgress)
             
-            // Создаем адаптер один раз при подключении
             if (PlaylistManager.songs.isNotEmpty()) {
                 setupAdapter()
             }
 
-            // ГЛАВНЫЙ СЛУШАТЕЛЬ ДЛЯ СИНХРОНИЗАЦИИ
             mediaController.addListener(object : Player.Listener {
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
                     updateMiniPlayerUI()
@@ -119,18 +124,31 @@ class MainActivity : AppCompatActivity() {
                     updateMiniPlayerUI()
                 }
                 
-                // Вызывается ПРИ КАЖДОМ переключении трека (автоматически или вручную)
                 override fun onMediaItemTransition(mediaItem: androidx.media3.common.MediaItem?, reason: Int) {
-                    // Синхронизируем индекс выбранного трека
                     PlaylistManager.selectedTrackIndex = mediaController.currentMediaItemIndex.takeIf { it >= 0 } ?: -1
-                    
-                    // Обновляем рамку в списке без пересоздания адаптера
                     songAdapter?.updatePlayingIndex(PlaylistManager.selectedTrackIndex)
-                    
-                    // Обновляем данные мини-плеера
                     updateMiniPlayerUI()
+                    
+                    if (PlaylistManager.selectedTrackIndex >= 0) {
+                        recyclerView.scrollToPosition(PlaylistManager.selectedTrackIndex)
+                    }
+                }
+                
+                // Исправление бага: обновляем прогресс, когда трек готов
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if (playbackState == Player.STATE_READY) {
+                        updateMiniPlayerUI()
+                        updateMiniProgress.run()
+                    }
                 }
             })
+            
+            recyclerView.post {
+                if (PlaylistManager.selectedTrackIndex >= 0) {
+                    recyclerView.scrollToPosition(PlaylistManager.selectedTrackIndex)
+                }
+            }
+
         }, ContextCompat.getMainExecutor(this))
     }
 
@@ -148,14 +166,14 @@ class MainActivity : AppCompatActivity() {
                     val index = PlaylistManager.songs.indexOf(clickedSong)
                     if (index >= 0 && ::mediaController.isInitialized) {
                         PlaylistManager.selectedTrackIndex = index
-                        val mediaItems = PlaylistManager.getMediaItems()
+                        val mediaItems = PlaylistManager.getMediaItems(this)
                         mediaController.setMediaItems(mediaItems)
                         mediaController.prepare()
                         mediaController.seekToDefaultPosition(index)
                         mediaController.play()
                         
-                        // Сразу обновляем рамку при клике
                         songAdapter?.updatePlayingIndex(index)
+                        recyclerView.smoothScrollToPosition(index)
                     }
                 },
                 PlaylistManager.selectedTrackIndex
@@ -168,28 +186,23 @@ class MainActivity : AppCompatActivity() {
     private fun updateMiniPlayerUI() {
         if (!::mediaController.isInitialized) return
         
-        val currentIndex = PlaylistManager.selectedTrackIndex
+        val currentIndex = mediaController.currentMediaItemIndex.takeIf { it >= 0 } ?: -1
         val song = PlaylistManager.songs.getOrNull(currentIndex)
-        
         val meta = mediaController.mediaMetadata
         
-        // Приоритет данных: сначала из локального списка, потом из метаданных плеера
-        val title = song?.title ?: meta.title ?: "Нет музыки"
+        val title = song?.title ?: meta.title ?: "No track selected..."
         val artist = song?.artist ?: meta.artist ?: ""
-        
-        // Приоритет обложки: из Song (надежнее), иначе из метаданных
         val artworkUri = song?.albumArtUri ?: meta.artworkUri?.toString()
-
+    
         tvMiniTitle.text = title
         tvMiniArtist.text = artist
         
-        // Надежная загрузка обложки
         imgMiniArt.load(artworkUri) {
             crossfade(true)
             placeholder(R.drawable.ic_not_image)
             error(R.drawable.ic_not_image)
             allowHardware(false)
-            transformations(coil.transform.RoundedCornersTransformation(16f * resources.displayMetrics.density))
+            transformations(RoundedCornersTransformation(16f * resources.displayMetrics.density))
         }
         
         btnMiniPlayPause.setImageResource(
@@ -210,7 +223,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 100 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) loadMusic()
+        if (requestCode == 100 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            loadMusic()
+        }
     }
 
     private fun loadMusic() {

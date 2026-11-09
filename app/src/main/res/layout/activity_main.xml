@@ -1,138 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto"
-     android:layout_height="match_parent"
-     android:layout_width="match_parent"
-     android:background="?attr/colorSurface">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
 
+    <!-- Верхняя секция: Статистика -->
     <LinearLayout
-         android:layout_height="wrap_content"
-         android:layout_width="match_parent"
-         android:background="?attr/colorSurface"
-         android:elevation="4dp"
-         app:layout_constraintTop_toTopOf="parent"
-         android:padding="16dp"
-         android:orientation="horizontal"
-         android:id="@+id/statsLayout">
+        android:id="@+id/statsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-             android:layout_height="wrap_content"
-             android:layout_width="0dp"
-             android:textSize="18sp"
-             android:textColor="?attr/colorOnSurface"
-             android:layout_weight="1"
-             android:id="@+id/tvSongCount"
-             android:text="Песен: 0"
-             android:textStyle="bold" />
-
-        <TextView
-             android:layout_height="wrap_content"
-             android:layout_width="0dp"
-             android:gravity="end"
-             android:textSize="18sp"
-             android:textColor="?attr/colorOnSurface"
-             android:layout_weight="1"
-             android:id="@+id/tvTotalSize"
-             android:text="Вес: 0 MB"
-             android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-         android:layout_height="0dp"
-         android:layout_width="match_parent"
-         android:padding="5dp"
-         android:clipToPadding="false"
-         app:layout_constraintBottom_toTopOf="@id/miniPlayer"
-         app:layout_constraintTop_toBottomOf="@id/statsLayout"
-         android:id="@+id/recyclerView" />
-
-    <LinearLayout
-         android:layout_height="64dp"
-         android:layout_width="match_parent"
-         android:background="?attr/colorSurface"
-         android:clickable="true"
-         android:elevation="8dp"
-         android:orientation="vertical"
-         app:layout_constraintBottom_toBottomOf="parent"
-         android:focusable="true"
-         android:id="@+id/miniPlayer">
-
-        <ProgressBar
-             android:layout_height="3dp"
-             android:layout_width="match_parent"
-             android:max="1000"
-             android:background="@android:color/transparent"
-             android:indeterminate="false"
-             android:progressTint="?attr/colorPrimary"
-             style="?android:attr/progressBarStyleHorizontal"
-             android:progress="0"
-             android:id="@+id/progressBarMini" />
-
-        <LinearLayout
-             android:layout_height="0dp"
-             android:layout_width="match_parent"
-             android:gravity="center_vertical"
-             android:orientation="horizontal"
-             android:paddingHorizontal="16dp"
-             android:layout_weight="1">
-
-            <androidx.cardview.widget.CardView
-                 android:layout_height="48dp"
-                 android:layout_width="48dp"
-                 app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                 app:cardCornerRadius="8dp">
-
-                <ImageView
-                     android:layout_height="match_parent"
-                     android:layout_width="match_parent"
-                     android:scaleType="centerCrop"
-                     android:src="@drawable/ic_not_image"
-                     android:id="@+id/imgMiniArt" />
-
-            </androidx.cardview.widget.CardView>
+        <!-- Чип 1: Количество песен -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutlineVariant">
 
             <LinearLayout
-                 android:layout_height="wrap_content"
-                 android:layout_width="0dp"
-                 android:orientation="vertical"
-                 android:layout_marginStart="16dp"
-                 android:layout_weight="1">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_setup_24"
+                    app:tint="?attr/colorPrimary" />
 
                 <TextView
-                     android:layout_height="wrap_content"
-                     android:layout_width="wrap_content"
-                     android:ellipsize="end"
-                     android:textColor="?attr/colorOnSurface"
-                     android:maxLines="1"
-                     android:id="@+id/tvMiniTitle"
-                     android:text="Нет музыки"
-                     android:textStyle="bold" />
-
-                <TextView
-                     android:layout_height="wrap_content"
-                     android:layout_width="wrap_content"
-                     android:ellipsize="end"
-                     android:textSize="12sp"
-                     android:textColor="?attr/colorOnSurfaceVariant"
-                     android:maxLines="1"
-                     android:id="@+id/tvMiniArtist"
-                     android:text="" />
-
+                    android:id="@+id/tvSongCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Песен: 0"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <ImageButton
-                android:id="@+id/ivMiniPlayPause" 
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_play_arrow_24"
-                android:tint="?attr/colorPrimary" />
+        <!-- Чип 2: Общий размер -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutlineVariant">
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_storage_24"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tvTotalSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Вес: 0 MB"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+
+    <!-- Список треков -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/statsLayout"
+        app:layout_constraintBottom_toTopOf="@id/miniPlayer" />
+
+    <!-- Мини-плеер -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/miniPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorOutlineVariant"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Прогресс-бар -->
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBarMini"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:max="100"
+                app:trackThickness="4dp"
+                app:trackCornerRadius="4dp"
+                app:trackColor="?attr/colorSurfaceVariant"
+                app:indicatorColor="?attr/colorPrimary" />
+
+            <!-- Содержимое мини-плеера -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgMiniArt"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_not_image"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvMiniTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Нет музыки"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <TextView
+                        android:id="@+id/tvMiniArtist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/ivMiniPlayPause"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_play_arrow_24"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="?attr/colorOnSurface"
+                    android:contentDescription="Play/Pause" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

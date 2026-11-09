@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Светлая тема (по умолчанию) -->
-    <style name="Theme.MyMusicPlayer" parent="Theme.Material3.Light">
+    <style name="Theme.MyMusicPlayer" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="colorPrimary">#6200EE</item>
         <item name="colorOnPrimary">#FFFFFF</item>
@@ -14,7 +14,7 @@
     </style>
 
     <!-- Темная тема (автоматически применяется системой) -->
-    <style name="Theme.MyMusicPlayer.Dark" parent="Theme.Material3.Dark">
+    <style name="Theme.MyMusicPlayer.Dark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="colorPrimary">#BB86FC</item>
         <item name="colorOnPrimary">#3700B3</item>

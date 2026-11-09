@@ -24,7 +24,7 @@
             </intent-filter>
         </service>
         <activity
-            android:name=".MainActivity"
+            android:name=".SetupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +36,10 @@
             android:exported="false"
             android:theme="@style/Theme.MyMusicPlayer">
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MyMusicPlayer"/>
     </application>
     
 </manifest>

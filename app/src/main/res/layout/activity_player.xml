@@ -1,89 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="32dp">
+    android:background="?attr/colorSurface">
 
     <!-- Кнопка назад -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_back_24"
-            android:tint="?attr/colorPrimary" />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Back"
+        android:src="@drawable/ic_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/colorOnSurface" />
 
     <!-- Обложка альбома -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="40dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-        app:cardCornerRadius="16dp">
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgAlbum"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraLarge" />
 
-        <ImageView
-            android:id="@+id/imgAlbum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
-    </androidx.cardview.widget.CardView>
-
-    <!-- Название и исполнитель -->
+    <!-- Название трека -->
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="32dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
         android:text="Название песни"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
         android:textColor="?attr/colorOnSurface"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgAlbum" />
 
+    <!-- Исполнитель -->
     <TextView
         android:id="@+id/tvArtist"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
         android:text="Исполнитель"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
         android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="16sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <!-- Прогресс бар -->
-    <SeekBar
+    <!-- Slider для перемотки -->
+    <com.google.android.material.slider.Slider
         android:id="@+id/seekBar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="32dp"
-        android:progress="0"
-        android:progressTint="?attr/colorPrimary"
-        android:thumbTint="?attr/colorPrimary" />
+        android:valueFrom="0.0"
+        android:valueTo="1000.0"
+        app:labelBehavior="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvArtist"
+        app:thumbRadius="12dp"
+        app:trackColorActive="?attr/colorPrimary"
+        app:trackColorInactive="?attr/colorSurfaceVariant"
+        app:trackHeight="5dp" />
 
-    <!-- Время -->
+    <!-- Временные метки (увеличены до BodyMedium) -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/timeLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal">
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBar">
 
         <TextView
             android:id="@+id/tvCurrentTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0:00"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textSize="12sp" />
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
 
         <TextView
             android:id="@+id/tvTotalTime"
@@ -92,45 +112,55 @@
             android:layout_weight="1"
             android:gravity="end"
             android:text="0:00"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textSize="12sp" />
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
     </LinearLayout>
 
     <!-- Кнопки управления -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeLayout">
 
-        <ImageButton
+        <!-- Кнопка Previous (увеличена) -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPrev"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_skip_previous_24"
-            android:tint="?attr/colorOnSurface" />
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:contentDescription="Previous"
+            app:icon="@drawable/ic_skip_previous_24"
+            app:iconSize="40dp"
+            app:iconTint="?attr/colorOnSurface" />
 
-        <ImageButton
-            android:id="@+id/btnPlay"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_marginHorizontal="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_play_arrow_24"
-            android:tint="?attr/colorPrimary" />
+        <!-- Кнопка Play/Pause (ИСПРАВЛЕНО: используем fabCustomSize вместо fabSize="large") -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnPlayPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:contentDescription="Play/Pause"
+            app:backgroundTint="?attr/colorPrimary"
+            app:fabCustomSize="96dp"
+            app:maxImageSize="40dp"
+            app:srcCompat="@drawable/ic_play_arrow_24"
+            app:tint="?attr/colorOnPrimary" />
 
-        <ImageButton
+        <!-- Кнопка Next (увеличена) -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNext"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_skip_next_24"
-            android:tint="?attr/colorOnSurface" />
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:contentDescription="Next"
+            app:icon="@drawable/ic_skip_next_24"
+            app:iconSize="40dp"
+            app:iconTint="?attr/colorOnSurface" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
