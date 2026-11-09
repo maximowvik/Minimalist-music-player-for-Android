@@ -47,7 +47,7 @@ MyMusicPlayer — это нативное Android-приложение, разр
 1. Клонируйте репозиторий:
 
 ```bash
-git clone https://github.com/your-username/MyMusicPlayer.git
+git clone https://github.com/maximowvik/Minimalist-music-player-for-Android.git
 ```
 2. Откройте проект в Android Studio.
 3. Дождитесь синхронизации Gradle.
