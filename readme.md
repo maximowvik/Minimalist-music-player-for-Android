@@ -1,14 +1,17 @@
-#MyMusicPlayer
+# MyMusicPlayer
+
 Современный, легкий и красивый музыкальный плеер для Android, созданный с использованием Material Design 3.
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-100%25-blue.svg)
 ![Material3](https://img.shields.io/badge/UI-Material%203-green.svg)
 ![Media3](https://img.shields.io/badge/Media-ExoPlayer-orange.svg)
 
-##Описание
+## Описание
+
 MyMusicPlayer — это нативное Android-приложение, разработанное для обеспечения бесшовного и визуально привлекательного прослушивания музыки. Приложение полностью автономно, сканирует локальное хранилище устройства и использует современные API Android для фоновой работы и управления через системные уведомления.
 
-##✨ Особенности
+## ✨ Особенности
+
 * **Material Design 3:** Современный, чистый интерфейс с правильными скруглениями, тенями и адаптивной типографикой.
 * **Фоновое воспроизведение:** Непрерывная работа плеера с использованием AndroidX Media3 (ExoPlayer) и MediaSessionService.
 * **Системные уведомления:** Rich Media Notifications с элементами управления воспроизведением и обложкой альбома.
@@ -17,14 +20,14 @@ MyMusicPlayer — это нативное Android-приложение, разр
 * **Умная загрузка изображений:** Эффективная загрузка и кэширование обложек с помощью библиотеки Coil.
 * **Fallback-обложки:** Автоматическая подстановка красивой заглушки из кэша, если у трека нет встроенной обложки.
 
-##📸 Скриншоты
-*(Замените пути на реальные скриншоты вашего приложения)*
+## 📸 Скриншоты
 
-| Главный экран | Полноэкранный плеер |
+| Главный экран | Полноэкранный плеер | Начальная настройка |
 | :---: | :---: |
-| ![Home](app/src/main/res/drawable/ic_not_image.png) | ![Player](app/src/main/res/drawable/ic_not_image.png) |
+| ![Home](screnshots/home.jpg) | ![Player](screnshots/player.jpg) | ![Player](screnshots/setup.jpg) |
 
-##🛠️ Технологический стек
+## 🛠️ Технологический стек
+
 * **Язык:** Kotlin
 * **Архитектура:** Activity-based с выделенным MediaSessionService
 * **UI:** XML, Material Design 3 Components (CardView, Slider, FAB, ShapeableImageView)
@@ -32,14 +35,17 @@ MyMusicPlayer — это нативное Android-приложение, разр
 * **Загрузка изображений:** Coil
 * **Асинхронность:** Kotlin Coroutines
 
-##🚀 Начало работы
-###Требования
+## 🚀 Начало работы
+
+### Требования
+
 * Android Studio Iguana / Jellyfish (или новее)
 * JDK 17+
 * Android SDK 34+ (Android 14)
 
-###Установка
+### Установка
 1. Клонируйте репозиторий:
+
 ```bash
 git clone https://github.com/your-username/MyMusicPlayer.git
 ```
@@ -47,7 +53,8 @@ git clone https://github.com/your-username/MyMusicPlayer.git
 3. Дождитесь синхронизации Gradle.
 4. Запустите приложение на эмуляторе или физическом устройстве.
 
-##📂 Структура проекта
+## 📂 Структура проекта
+
 ```text
 app/src/main/kotlin/ru/deltagroup/mymusicplayer/
 //MainActivity.kt - Главный экран со списком треков и мини-плеером
@@ -58,8 +65,10 @@ app/src/main/kotlin/ru/deltagroup/mymusicplayer/
 //Utils.kt - Утилиты (например, получение цветов из темы)
 ```
 
-##⚙️ Конфигурация
+## ⚙️ Конфигурация
+
 Для корректной работы убедитесь, что в `AndroidManifest.xml` предоставлены необходимые разрешения:
+
 ```xml
 //Разрешение для чтения аудиофайлов (Android 13+)
 <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
@@ -70,8 +79,8 @@ app/src/main/kotlin/ru/deltagroup/mymusicplayer/
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 ```
 
-##🤝 Вклад в проект
+## 🤝 Вклад в проект
 Pull Request'ы приветствуются! Если у вас есть идеи по улучшению UI или добавлению новых функций, создавайте Issue или Fork репозитория.
 
-##📄 Лицензия
+## 📄 Лицензия
 //Этот проект распространяется под лицензией MIT. См. файл LICENSE для подробностей.
